@@ -1,0 +1,17 @@
+{
+  "name": "@korumite/kiwi",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "tsup index.ts --dts --format cjs,esm",
+    "lint": "tsc"
+  },
+  "devDependencies": {
+    "prettier": "3.2.5",
+    "tsup": "8.0.2",
+    "typescript": "5.4.2"
+  }
+}
