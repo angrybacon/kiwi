@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+# permissions:
+#   contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: lts/*
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+
+  tests:
+    name: Node v${{ matrix.node }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node: [18.x, 20.x]
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: ${{ matrix.node }}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  publish:
+    name: Publish
+    needs: [lint, tests]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # NOTE Enable use of OIDC for NPM provenance
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        # with:
+        #   fetch-depth: 0
+        #   persist-credentials: false
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: lts/*
+      - run: pnpm install --frozen-lockfile
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
