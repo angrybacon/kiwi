@@ -24,6 +24,9 @@
     "test:coverage": "pnpm run test --coverage",
     "test:watch": "pnpm run test --watchAll"
   },
+  "dependencies": {
+    "gray-matter": "4.0.3"
+  },
   "devDependencies": {
     "@semantic-release/git": "10.0.1",
     "@types/jest": "29.5.12",
