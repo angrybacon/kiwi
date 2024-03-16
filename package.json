@@ -1,12 +1,18 @@
 {
-  "name": "@korumite/kiwi",
+  "files": [
+    "dist/"
+  ],
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "name": "@korumite/kiwi",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/angrybacon/kiwi.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angrybacon/kiwi.git"
+  },
   "types": "dist/index.d.ts",
   "version": "1.1.1",
   "scripts": {
