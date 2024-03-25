@@ -9,6 +9,9 @@
       "types": "dist/markdown.d.ts"
     }
   },
+  "files": [
+    "dist/"
+  ],
   "license": "MIT",
   "name": "@korumite/kiwi",
   "publishConfig": {
