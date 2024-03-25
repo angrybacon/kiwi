@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/angrybacon/kiwi.git"
   },
-  "version": "1.3.0",
+  "version": "1.3.1",
   "scripts": {
     "build": "tsup lib/files.ts lib/markdown.ts --dts",
     "lint": "pnpm run '/^lint:.+/'",
