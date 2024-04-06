@@ -1,5 +1,10 @@
 {
-  "exports": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist/"
   ],
@@ -13,10 +18,9 @@
     "url": "git+https://github.com/angrybacon/kiwi.git"
   },
   "type": "module",
-  "types": "dist/index.d.ts",
   "version": "1.5.2",
   "scripts": {
-    "build": "tsup lib/index.ts --dts --format esm",
+    "build": "tsup",
     "lint": "pnpm run '/^lint:.+/'",
     "lint:typings": "tsc",
     "release": "semantic-release",
