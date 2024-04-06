@@ -1,5 +1,5 @@
 {
-  "exports": "dist/index.ts",
+  "exports": "dist/index.js",
   "files": [
     "dist/"
   ],
