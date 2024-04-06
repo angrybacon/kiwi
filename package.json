@@ -1,10 +1,9 @@
 {
+  "exports": "dist/index.ts",
   "files": [
     "dist/"
   ],
   "license": "MIT",
-  "main": "dist/index.ts",
-  "module": "dist/index.mjs",
   "name": "@korumite/kiwi",
   "publishConfig": {
     "access": "public"
@@ -13,10 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/angrybacon/kiwi.git"
   },
+  "type": "module",
   "types": "dist/index.d.ts",
   "version": "1.5.0",
   "scripts": {
-    "build": "tsup lib/index.ts --dts --format cjs,esm",
+    "build": "tsup lib/index.ts --dts --format esm",
     "lint": "pnpm run '/^lint:.+/'",
     "lint:typings": "tsc",
     "release": "semantic-release",

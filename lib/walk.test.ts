@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { vol } from 'memfs';
 
-import { walk } from './walk';
+import { walk } from './walk.ts';
 
 jest.mock('fs', () => require('memfs'));
 

@@ -1,5 +1,5 @@
 import { existsSync, readdirSync } from 'fs';
-import { join, parse } from 'path';
+import { join, parse } from 'node:path';
 
 interface WalkOptions {
   depth?: number;

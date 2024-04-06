@@ -1,3 +1,3 @@
-export * from './hastify';
-export * from './read';
-export * from './walk';
+export * from './hastify.ts';
+export * from './read.ts';
+export * from './walk.ts';
