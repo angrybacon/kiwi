@@ -1,7 +1,7 @@
 {
   "clean": true,
   "dts": true,
-  "entry": ["lib/index.ts"],
+  "entry": ["lib/index.client.ts", "lib/index.server.ts"],
   "format": ["esm"],
   "outDir": "dist",
   "splitting": true,

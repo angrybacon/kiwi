@@ -1,8 +1,12 @@
 {
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+    "./client": {
+      "import": "./dist/index.client.js",
+      "types": "./dist/index.client.d.ts"
+    },
+    "./server": {
+      "import": "./dist/index.server.js",
+      "types": "./dist/index.server.d.ts"
     }
   },
   "files": [
