@@ -1,11 +1,11 @@
 import { readFileSync } from 'fs';
 import { vol } from 'memfs';
 
-import { walk } from './walk.ts';
+import { walkDirectory } from './walk.ts';
 
 jest.mock('fs', () => require('memfs'));
 
-describe(walk.name, () => {
+describe(walkDirectory.name, () => {
   describe('Basic', () => {
     beforeEach(() => {
       vol.fromJSON(
@@ -31,7 +31,7 @@ describe(walk.name, () => {
 
     it('should build the complete root structure', () => {
       // When
-      const result = walk('/');
+      const result = walkDirectory('/');
       // Then
       expect(result).toEqual([
         ['a', 'a'],
@@ -45,14 +45,14 @@ describe(walk.name, () => {
 
     it('should build an empty array when the directory is empty', () => {
       // When
-      const result = walk('/empty.d');
+      const result = walkDirectory('/empty.d');
       // Then
       expect(result).toEqual([]);
     });
 
     it('should build an empty array when the directory does not exist', () => {
       // When
-      const result = walk('/does/not/exist');
+      const result = walkDirectory('/does/not/exist');
       // Then
       expect(result).toEqual([]);
     });
@@ -75,7 +75,7 @@ describe(walk.name, () => {
 
     it('should match all files by default', () => {
       // When
-      const result = walk('/');
+      const result = walkDirectory('/');
       // Then
       expect(result).toEqual([
         ['a', 'a'],
@@ -89,7 +89,7 @@ describe(walk.name, () => {
 
     it('should match text files when specified', () => {
       // When
-      const result = walk('/', { extension: '.txt' });
+      const result = walkDirectory('/', { extension: '.txt' });
       // Then
       expect(result).toEqual([
         ['a', 'b'],
@@ -116,7 +116,7 @@ describe(walk.name, () => {
 
     it('should walk the complete tree by default', () => {
       // When
-      const result = walk('/');
+      const result = walkDirectory('/');
       // Then
       expect(result).toEqual([
         ['a', 'a'],
@@ -130,7 +130,7 @@ describe(walk.name, () => {
 
     it('should walk down to the specified depth', () => {
       // When
-      const result = walk('/', { depth: 2 });
+      const result = walkDirectory('/', { depth: 2 });
       // Then
       expect(result).toEqual([
         ['a', 'a'],

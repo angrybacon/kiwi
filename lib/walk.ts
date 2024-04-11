@@ -35,10 +35,32 @@ function* walkIterator(
 }
 
 /**
- * Walk down `directory` and return an array of tuples corresponding to all
+ * Traverse down `directory` and return an array of tuples corresponding to all
  * paths found within.
  * Travel only as far down as `options.depth` and limit results to
  * `options.extension` if provided.
  */
-export const walk = (directory: string, options?: WalkOptions): string[][] =>
-  Array.from(walkIterator(directory, options));
+export const walkDirectory = (
+  directory: string,
+  options?: WalkOptions,
+): string[][] => Array.from(walkIterator(directory, options));
+
+/** Walk through the provided `root` and return an array of named routes. */
+export const walk = <
+  TName extends string,
+  TRoute extends Record<TName, string>,
+>(
+  root: string,
+  names: TName[],
+): TRoute[] =>
+  walkDirectory(root).map((crumbs) => {
+    if (crumbs.length !== names.length) {
+      throw new Error(
+        `Found orphan at "${crumbs}", expected depth of ${names.length}`,
+      );
+    }
+    return names.reduce(
+      (route, name, index) => ({ ...route, [name]: crumbs[index] }),
+      {} as TRoute,
+    );
+  });
