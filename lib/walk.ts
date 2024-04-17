@@ -40,7 +40,7 @@ export const walkDirectory = (
 /** Walk through the provided `root` and return an array of named routes. */
 export const walk = <
   TName extends string,
-  TRoute extends Record<TName, string>,
+  TRoute extends Record<TName, { pretty: string; raw: string }>,
 >(
   root: string,
   names: TName[],
@@ -54,7 +54,13 @@ export const walk = <
       );
     }
     return names.reduce(
-      (route, name, index) => ({ ...route, [name]: crumbs[index] }),
+      (route, name, index) => ({
+        ...route,
+        [name]: {
+          pretty: crumbs[index]!.replace(/^\d+-/, ''),
+          raw: crumbs[index]!,
+        },
+      }),
       {} as TRoute,
     );
   });

@@ -92,25 +92,25 @@ describe.only(walk.name, () => {
     // Given
     vol.fromJSON(
       {
-        'a/a/a.md': '',
-        'a/b/b.md': '',
-        'a/c/c.md': '',
-        'b/a/a.md': '',
-        'b/b/b.md': '',
-        'c/a/a.md': '',
+        'a/a.md': '',
+        'a/b.md': '',
+        'a/c.md': '',
+        'b/a.md': '',
+        'b/b.md': '',
+        'c/a.md': '',
       },
       '/',
     );
     // When
-    const result = walk('/', ['one', 'two', 'three']);
+    const result = walk('/', ['one', 'two']);
     // Then
     expect(result).toEqual([
-      { one: 'a', two: 'a', three: 'a' },
-      { one: 'a', two: 'b', three: 'b' },
-      { one: 'a', two: 'c', three: 'c' },
-      { one: 'b', two: 'a', three: 'a' },
-      { one: 'b', two: 'b', three: 'b' },
-      { one: 'c', two: 'a', three: 'a' },
+      { one: { pretty: 'a', raw: 'a' }, two: { pretty: 'a', raw: 'a' } },
+      { one: { pretty: 'a', raw: 'a' }, two: { pretty: 'b', raw: 'b' } },
+      { one: { pretty: 'a', raw: 'a' }, two: { pretty: 'c', raw: 'c' } },
+      { one: { pretty: 'b', raw: 'b' }, two: { pretty: 'a', raw: 'a' } },
+      { one: { pretty: 'b', raw: 'b' }, two: { pretty: 'b', raw: 'b' } },
+      { one: { pretty: 'c', raw: 'c' }, two: { pretty: 'a', raw: 'a' } },
     ]);
   });
 
@@ -131,5 +131,31 @@ describe.only(walk.name, () => {
     const f = () => walk('/', ['parent', 'child']);
     // Then
     expect(f).toThrow(/Found orphan.+expected depth of 2/);
+  });
+
+  it('should remove digit prefixes', () => {
+    // Given
+    vol.fromJSON(
+      {
+        'a/01-a.md': '',
+        'a/02-b.md': '',
+        'a/03-c.md': '',
+        '01-b/01-a.md': '',
+        '01-b/02-b.md': '',
+        '02-c/a.md': '',
+      },
+      '/',
+    );
+    // When
+    const result = walk('/', ['one', 'two']);
+    // Then
+    expect(result).toEqual([
+      { one: { pretty: 'b', raw: '01-b' }, two: { pretty: 'a', raw: '01-a' } },
+      { one: { pretty: 'b', raw: '01-b' }, two: { pretty: 'b', raw: '02-b' } },
+      { one: { pretty: 'c', raw: '02-c' }, two: { pretty: 'a', raw: 'a' } },
+      { one: { pretty: 'a', raw: 'a' }, two: { pretty: 'a', raw: '01-a' } },
+      { one: { pretty: 'a', raw: 'a' }, two: { pretty: 'b', raw: '02-b' } },
+      { one: { pretty: 'a', raw: 'a' }, two: { pretty: 'c', raw: '03-c' } },
+    ]);
   });
 });
