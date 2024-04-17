@@ -22,7 +22,7 @@
     "url": "git+https://github.com/angrybacon/kiwi.git"
   },
   "type": "module",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "scripts": {
     "build": "tsup",
     "lint": "pnpm run '/^lint:.+/'",
