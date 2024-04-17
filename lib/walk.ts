@@ -1,11 +1,6 @@
 import { existsSync, readdirSync } from 'fs';
 import { join, parse } from 'node:path';
 
-interface WalkOptions {
-  depth?: number;
-  extension?: string;
-}
-
 /**
  * Generator to walk through `directory` and yield all of its files.
  * Return a tuple containing all successive parent folders followed by the file
@@ -15,18 +10,15 @@ interface WalkOptions {
  */
 function* walkIterator(
   directory: string,
-  options: WalkOptions = {},
+  extension?: string,
   accumulator: string[] = [],
 ): Generator<string[], void> {
-  const { depth, extension } = options;
-  if (accumulator.length === depth) return;
   if (existsSync(directory)) {
-    // NOTE Looping over the stream requires the `--downlevelIteration` flag
     for (const file of readdirSync(directory, { withFileTypes: true })) {
       const { ext, name } = parse(file.name);
       if (file.isDirectory()) {
         const entry = join(directory, file.name);
-        yield* walkIterator(entry, options, [...accumulator, file.name]);
+        yield* walkIterator(entry, extension, [...accumulator, file.name]);
       } else if (file.isFile() && (!extension || ext === extension)) {
         yield [...accumulator, name];
       }
@@ -42,8 +34,8 @@ function* walkIterator(
  */
 export const walkDirectory = (
   directory: string,
-  options?: WalkOptions,
-): string[][] => Array.from(walkIterator(directory, options));
+  extension?: string,
+): string[][] => Array.from(walkIterator(directory, extension));
 
 /** Walk through the provided `root` and return an array of named routes. */
 export const walk = <
@@ -52,15 +44,19 @@ export const walk = <
 >(
   root: string,
   names: TName[],
-): TRoute[] =>
-  walkDirectory(root).map((crumbs) => {
+  options: { extension?: string; prefix?: RegExp } = {},
+): TRoute[] => {
+  const { extension, prefix } = options;
+  return walkDirectory(root, extension).map((crumbs) => {
     if (crumbs.length !== names.length) {
       throw new Error(
         `Found orphan at "${crumbs}", expected depth of ${names.length}`,
       );
     }
-    return names.reduce(
-      (route, name, index) => ({ ...route, [name]: crumbs[index] }),
-      {} as TRoute,
-    );
+    return names.reduce((route, name, index) => {
+      const key = prefix ? name.replace(prefix, '') : name;
+      const value = prefix ? crumbs[index]!.replace(prefix, '') : crumbs[index];
+      return { ...route, [key]: value };
+    }, {} as TRoute);
   });
+};
