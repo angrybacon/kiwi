@@ -132,30 +132,4 @@ describe.only(walk.name, () => {
     // Then
     expect(f).toThrow(/Found orphan.+expected depth of 2/);
   });
-
-  it('should remove the prefix when provided', () => {
-    // Given
-    vol.fromJSON(
-      {
-        'a/01-a.md': '',
-        'a/02-b.md': '',
-        'a/03-c.md': '',
-        'b/01-a.md': '',
-        'b/02-b.md': '',
-        'c/a.md': '',
-      },
-      '/',
-    );
-    // When
-    const result = walk('/', ['one', 'two'], { prefix: /^\d+-/ });
-    // Then
-    expect(result).toEqual([
-      { one: 'a', two: 'a' },
-      { one: 'a', two: 'b' },
-      { one: 'a', two: 'c' },
-      { one: 'b', two: 'a' },
-      { one: 'b', two: 'b' },
-      { one: 'c', two: 'a' },
-    ]);
-  });
 });

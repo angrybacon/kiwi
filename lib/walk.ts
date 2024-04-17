@@ -44,19 +44,18 @@ export const walk = <
 >(
   root: string,
   names: TName[],
-  options: { extension?: string; prefix?: RegExp } = {},
+  options: { extension?: string } = {},
 ): TRoute[] => {
-  const { extension, prefix } = options;
+  const { extension } = options;
   return walkDirectory(root, extension).map((crumbs) => {
     if (crumbs.length !== names.length) {
       throw new Error(
         `Found orphan at "${crumbs}", expected depth of ${names.length}`,
       );
     }
-    return names.reduce((route, name, index) => {
-      const key = prefix ? name.replace(prefix, '') : name;
-      const value = prefix ? crumbs[index]!.replace(prefix, '') : crumbs[index];
-      return { ...route, [key]: value };
-    }, {} as TRoute);
+    return names.reduce(
+      (route, name, index) => ({ ...route, [name]: crumbs[index] }),
+      {} as TRoute,
+    );
   });
 };
