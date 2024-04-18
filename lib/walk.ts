@@ -32,30 +32,7 @@ function* walkIterator(
  * Travel only as far down as `options.depth` and limit results to
  * `options.extension` if provided.
  */
-export const walkDirectory = (
+export const walk = (
   directory: string,
-  extension?: string,
-): string[][] => Array.from(walkIterator(directory, extension));
-
-/** Walk through the provided `root` and return an array of named routes. */
-export const walk = <
-  TName extends string,
-  TRoute extends Record<TName, string>,
->(
-  root: string,
-  names: TName[],
   options: { extension?: string } = {},
-): TRoute[] => {
-  const { extension } = options;
-  return walkDirectory(root, extension).map((crumbs) => {
-    if (crumbs.length !== names.length) {
-      throw new Error(
-        `Found orphan at "${crumbs}", expected depth of ${names.length}`,
-      );
-    }
-    return names.reduce(
-      (route, name, index) => ({ ...route, [name]: crumbs[index] }),
-      {} as TRoute,
-    );
-  });
-};
+): string[][] => Array.from(walkIterator(directory, options.extension));
