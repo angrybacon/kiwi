@@ -1,8 +1,8 @@
 type Entry = { label: string; path: string };
 
-export const makeMenu = (
-  paths: [chapter: string, slug: string][],
-): [chapter: string, entries: Entry[]][] => {
+export type Menu = [chapter: string, entries: Entry[]][];
+
+export const makeMenu = (paths: [chapter: string, slug: string][]): Menu => {
   const menu = paths.reduce<Map<string, Entry[]>>(
     (accumulator, [chapter, slug]) => {
       if (!accumulator.get(chapter)) {
