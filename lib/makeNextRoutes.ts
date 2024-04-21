@@ -13,7 +13,10 @@ export const makeNextRoutes = <
       );
     }
     return names.reduce(
-      (route, name, index) => ({ ...route, [name]: crumbs[index] }),
+      (route, name, index) => ({
+        ...route,
+        [name]: crumbs[index]?.replace(/^\d+-/, ''),
+      }),
       {} as TRoute,
     );
   });
