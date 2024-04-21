@@ -85,4 +85,30 @@ describe(walk.name, () => {
     // Then
     expect(result).toEqual([]);
   });
+
+  it('should sort the files by directory', () => {
+    // Given
+    vol.fromJSON(
+      {
+        'a/a.md': '',
+        'a/02-b.txt': '',
+        'a/01-c.md': '',
+        '01-b/a/b.txt': '',
+        '01-b/c/d.txt': '',
+        'c.d/03-d/02-e/01-f.md': '',
+      },
+      '/',
+    );
+    // When
+    const result = walk('/');
+    // Then
+    expect(result).toEqual([
+      ['01-b', 'a', 'b'],
+      ['01-b', 'c', 'd'],
+      ['a', '01-c'],
+      ['a', '02-b'],
+      ['a', 'a'],
+      ['c.d', '03-d', '02-e', '01-f'],
+    ]);
+  });
 });

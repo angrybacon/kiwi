@@ -28,11 +28,13 @@ function* walkIterator(
 
 /**
  * Traverse down `directory` and return an array of tuples corresponding to all
- * paths found within.
- * Travel only as far down as `options.depth` and limit results to
- * `options.extension` if provided.
+ * paths found within. Sort the output.
+ * Limit results to `options.extension` if provided.
  */
 export const walk = (
   directory: string,
   options: { extension?: string } = {},
-): string[][] => Array.from(walkIterator(directory, options.extension));
+): string[][] => {
+  const paths = Array.from(walkIterator(directory, options.extension));
+  return paths.sort((a, b) => a.join().localeCompare(b.join()));
+};
