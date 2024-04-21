@@ -29,4 +29,29 @@ describe(makeMenu.name, () => {
       ],
     ]);
   });
+
+  it('should error if a path has less than 2 crumbs', () => {
+    // Given
+    const paths = [['a'], ['b', 'a'], ['b', 'b']];
+    // When
+    // @ts-expect-error Force value for testing purposes
+    const f = () => makeMenu(paths);
+    // Then
+    expect(f).toThrow('Expect depth of 2 but got "a"');
+  });
+
+  it('should error if a path has less than 2 crumbs', () => {
+    // Given
+    const paths = [
+      ['a', 'a'],
+      ['a', 'b', 'c'],
+      ['b', 'a'],
+      ['b', 'b'],
+    ];
+    // When
+    // @ts-expect-error Force value for testing purposes
+    const f = () => makeMenu(paths);
+    // Then
+    expect(f).toThrow('Expect depth of 2 but got "a,b,c"');
+  });
 });
