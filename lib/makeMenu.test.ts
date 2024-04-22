@@ -54,4 +54,33 @@ describe(makeMenu.name, () => {
     // Then
     expect(f).toThrow('Expect depth of 2 but got "a,b,c"');
   });
+
+  it('should trim digit prefixes', () => {
+    // Given
+    const paths = [
+      ['01-a', 'a'],
+      ['01-a', 'b'],
+      ['b', '01-a'],
+      ['b', 'b'],
+    ] as const satisfies [string, string][];
+    // When
+    const result = makeMenu(paths);
+    // Then
+    expect(result).toEqual([
+      [
+        'a',
+        [
+          { label: 'a', path: '/a/a' },
+          { label: 'b', path: '/a/b' },
+        ],
+      ],
+      [
+        'b',
+        [
+          { label: 'a', path: '/b/a' },
+          { label: 'b', path: '/b/b' },
+        ],
+      ],
+    ]);
+  });
 });

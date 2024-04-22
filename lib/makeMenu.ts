@@ -1,3 +1,5 @@
+const trim = (text: string): string => text.replace(/^\d+-/, '');
+
 type Entry = { label: string; path: string };
 
 export type Menu = [chapter: string, entries: Entry[]][];
@@ -7,7 +9,8 @@ export const makeMenu = (paths: [chapter: string, slug: string][]): Menu => {
     if (crumbs.length !== 2) {
       throw new Error(`Expect depth of 2 but got "${crumbs}"`);
     }
-    const [chapter, slug] = crumbs;
+    const [realChapter, realSlug] = crumbs;
+    const [chapter, slug] = [trim(realChapter), trim(realSlug)];
     if (!accumulator.get(chapter)) {
       accumulator.set(chapter, []);
     }
