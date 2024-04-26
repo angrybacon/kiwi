@@ -9,15 +9,23 @@ import matter from 'gray-matter';
 export const read = (
   path: string,
   root: string = 'markdown',
-): { matter: Record<string, unknown>; text: string; title?: string } => {
+): {
+  banner?: string;
+  matter: Record<string, unknown>;
+  text: string;
+  title?: string;
+} => {
   try {
     const buffer = readFileSync(join(process.cwd(), root, path), 'utf8');
     const { content, data } = matter(buffer);
-    const { title } = data;
+    const { banner, title } = data;
+    if (banner && typeof banner !== 'string') {
+      throw new Error(`Wrong format for banner "${banner}"`);
+    }
     if (title && typeof title !== 'string') {
       throw new Error(`Wrong format for title "${title}"`);
     }
-    return { matter: data, text: content, title };
+    return { banner, matter: data, text: content, title };
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
     throw new Error(`${message} in "${join(root, path)}"`);
