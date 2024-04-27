@@ -13,7 +13,7 @@ export const read = (
 ): {
   banner?: string;
   matter: Record<string, unknown>;
-  minutes: number;
+  minutes: string;
   text: string;
   title?: string;
 } => {
@@ -30,7 +30,7 @@ export const read = (
     return {
       banner,
       matter: data,
-      minutes: readingTime(content).minutes,
+      minutes: readingTime(content).minutes.toFixed(),
       text: content,
       title,
     };
