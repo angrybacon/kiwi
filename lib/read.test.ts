@@ -1,4 +1,5 @@
 import { read } from './read.ts';
+import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 
 jest.mock('node:fs');
@@ -15,7 +16,7 @@ describe(read.name, () => {
     // Then
     expect(readFileSync).toHaveBeenCalledTimes(1);
     expect(readFileSync).toHaveBeenCalledWith(
-      expect.stringMatching(/\/markdown.md$/),
+      expect.stringMatching('markdown.md$'),
       'utf8',
     );
   });
@@ -28,7 +29,7 @@ describe(read.name, () => {
     // Then
     expect(readFileSync).toHaveBeenCalledTimes(1);
     expect(readFileSync).toHaveBeenCalledWith(
-      expect.stringMatching(/\/root\/markdown.md$/),
+      expect.stringMatching(join('root', 'markdown.md$')),
       'utf8',
     );
   });
