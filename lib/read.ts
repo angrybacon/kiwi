@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import matter from 'gray-matter';
+import readingTime from 'reading-time';
 
 /**
  * Read file at `path` as Markdown and parse the frontmatter found.
@@ -12,6 +13,7 @@ export const read = (
 ): {
   banner?: string;
   matter: Record<string, unknown>;
+  minutes: number;
   text: string;
   title?: string;
 } => {
@@ -25,7 +27,13 @@ export const read = (
     if (title && typeof title !== 'string') {
       throw new Error(`Wrong format for title "${title}"`);
     }
-    return { banner, matter: data, text: content, title };
+    return {
+      banner,
+      matter: data,
+      minutes: readingTime(content).minutes,
+      text: content,
+      title,
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
     throw new Error(`${message} in "${join(root, path)}"`);
