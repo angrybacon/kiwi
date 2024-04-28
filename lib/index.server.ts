@@ -1,3 +1,4 @@
+export * from './getToc.ts';
 export * from './makeMenu.ts';
 export * from './makeNextRoutes.ts';
 export * from './read.ts';
