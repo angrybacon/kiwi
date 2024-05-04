@@ -30,6 +30,7 @@ export const read = (
     return {
       banner,
       matter: data,
+      // TODO Return a fixed number instead of a string
       minutes: readingTime(content).minutes.toFixed(),
       text: content,
       title,
