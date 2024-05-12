@@ -42,7 +42,7 @@ describe(read.name, () => {
     // Then
     expect(result).toEqual({
       matter: {},
-      minutes: expect.any(String),
+      minutes: 1,
       title: undefined,
       text,
     });
@@ -62,7 +62,7 @@ describe(read.name, () => {
     expect(result).toEqual({
       banner: 'BANNER',
       matter: { banner: 'BANNER', title: 'Title' },
-      minutes: expect.any(String),
+      minutes: 1,
       title: 'Title',
       text: `
 Paragraph one.
