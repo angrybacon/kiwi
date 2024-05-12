@@ -4,29 +4,25 @@ import matter from 'gray-matter';
 import readingTime from 'reading-time';
 
 /**
- * Read file at `path` as Markdown and parse the frontmatter found.
- * By default look in the `markdown/` directory where the process is run.
+ * Read file found at the path described by the `crumbs` as Markdown and parse
+ * the frontmatter found.
+ * Expand the crumbs into a path starting where the process is run.
  */
 export const read = (
-  path: string,
-  root: string = 'markdown',
+  ...crumbs: string[]
 ): {
   banner?: string;
   matter: Record<string, unknown>;
-  minutes: string;
+  minutes: number;
   text: string;
   title?: string;
 } => {
   try {
-    const buffer = readFileSync(join(process.cwd(), root, path), 'utf8');
+    const path = join(process.cwd(), ...crumbs);
+    const buffer = readFileSync(path, 'utf8');
     const { content, data } = matter(buffer);
     const { banner, title } = data;
-    if (banner && typeof banner !== 'string') {
-      throw new Error(`Wrong format for banner "${banner}"`);
-    }
-    if (title && typeof title !== 'string') {
-      throw new Error(`Wrong format for title "${title}"`);
-    }
+    assertStringTypes({ banner, title });
     return {
       banner,
       matter: data,
@@ -36,6 +32,16 @@ export const read = (
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
-    throw new Error(`${message} in "${join(root, path)}"`);
+    throw new Error(`${message} in "${join(...crumbs)}"`);
   }
 };
+
+function assertStringTypes(
+  values: Record<string, unknown>,
+): asserts values is Record<string, string> {
+  Object.entries(values).forEach(([name, value]) => {
+    if (value !== undefined && typeof value !== 'string') {
+      throw new Error(`Wrong format for ${name} "${value}"`);
+    }
+  });
+}

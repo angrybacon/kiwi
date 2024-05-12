@@ -11,24 +11,11 @@ describe(read.name, () => {
     // Given
     jest.mocked(readFileSync).mockReturnValueOnce('');
     // When
-    read('markdown.md');
+    read('one', 'two', 'markdown.md');
     // Then
     expect(readFileSync).toHaveBeenCalledTimes(1);
     expect(readFileSync).toHaveBeenCalledWith(
-      expect.stringMatching('/markdown.md$'),
-      'utf8',
-    );
-  });
-
-  it('should read the file under the provided root', () => {
-    // Given
-    jest.mocked(readFileSync).mockReturnValueOnce('');
-    // When
-    read('markdown.md', 'root');
-    // Then
-    expect(readFileSync).toHaveBeenCalledTimes(1);
-    expect(readFileSync).toHaveBeenCalledWith(
-      expect.stringMatching('/root/markdown.md$'),
+      expect.stringMatching('/one/two/markdown.md$'),
       'utf8',
     );
   });
@@ -69,5 +56,25 @@ Paragraph one.
 
 Paragraph two.`,
     });
+  });
+
+  it('should throw when the banner is invalid', () => {
+    // Given
+    const text = makeMarkdown(['---', 'banner: 123.4', '---']);
+    jest.mocked(readFileSync).mockReturnValueOnce(text);
+    // When
+    const test = () => read('markdown.md');
+    // Then
+    expect(test).toThrow('Wrong format for banner "123.4" in "markdown.md"');
+  });
+
+  it('should throw when the title is invalid', () => {
+    // Given
+    const text = makeMarkdown(['---', 'title: [foo, bar]', '---']);
+    jest.mocked(readFileSync).mockReturnValueOnce(text);
+    // When
+    const test = () => read('markdown.md');
+    // Then
+    expect(test).toThrow('Wrong format for title "foo,bar" in "markdown.md"');
   });
 });
