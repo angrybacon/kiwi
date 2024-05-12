@@ -14,10 +14,7 @@ describe(read.name, () => {
     read('one', 'two', 'markdown.md');
     // Then
     expect(readFileSync).toHaveBeenCalledTimes(1);
-    expect(readFileSync).toHaveBeenCalledWith(
-      expect.stringMatching('/one/two/markdown.md$'),
-      'utf8',
-    );
+    expect(readFileSync).toHaveBeenCalledWith('one/two/markdown.md', 'utf8');
   });
 
   it('should read a Markdown file', () => {

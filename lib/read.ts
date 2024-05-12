@@ -17,8 +17,8 @@ export const read = (
   text: string;
   title?: string;
 } => {
+  const path = join(...crumbs);
   try {
-    const path = join(process.cwd(), ...crumbs);
     const buffer = readFileSync(path, 'utf8');
     const { content, data } = matter(buffer);
     const { banner, title } = data;
@@ -32,7 +32,7 @@ export const read = (
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
-    throw new Error(`${message} in "${join(...crumbs)}"`);
+    throw new Error(`${message} in "${path}"`);
   }
 };
 
