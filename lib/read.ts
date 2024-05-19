@@ -6,7 +6,8 @@ import readingTime from 'reading-time';
 /**
  * Read file found at the path described by the `crumbs` as Markdown and parse
  * the frontmatter found.
- * Expand the crumbs into a path starting where the process is run.
+ * This assumes the file extension is provided with the last crumb.
+ * The crumbs into a path starting where the process is run.
  */
 export const read = (
   ...crumbs: string[]
@@ -18,8 +19,8 @@ export const read = (
   title?: string;
 } => {
   const path = join(...crumbs);
+  const buffer = readFileSync(path, 'utf8');
   try {
-    const buffer = readFileSync(path, 'utf8');
     const { content, data } = matter(buffer);
     const { banner, title } = data;
     assertStringTypes({ banner, title });

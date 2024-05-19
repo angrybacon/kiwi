@@ -1,4 +1,11 @@
-/** Loop over the provided `paths` and return an array of named routes. */
+/**
+ * Loop over the provided `paths` and return an array of named routes.
+ *
+ * The output is meant to be used with the Next.js _app_ router (_pages_ router
+ * not supported).
+ * Each route consists of key value pairs corresponding to the provided name
+ * specifications and each crumb is stripped of its digits prefix.
+ */
 export const makeNextRoutes = <
   TName extends string,
   TRoute extends Record<TName, string>,
