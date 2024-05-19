@@ -1,5 +1,6 @@
-import { read } from './read.ts';
 import { readFileSync } from 'node:fs';
+
+import { read } from './read.ts';
 
 jest.mock('node:fs');
 

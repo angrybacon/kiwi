@@ -7,7 +7,9 @@ import readingTime from 'reading-time';
  * Read file found at the path described by the `crumbs` as Markdown and parse
  * the frontmatter found.
  * This assumes the file extension is provided with the last crumb.
- * The crumbs into a path starting where the process is run.
+ * This assumes the path crumbs are relative to the process working directory.
+ *
+ * @deprecated Use `read2` instead
  */
 export const read = (
   ...crumbs: string[]
