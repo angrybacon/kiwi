@@ -15,7 +15,15 @@ import { remarkMinutes } from './remarkMinutes.ts';
  * This assumes the file extension is provided with the last crumb.
  * This assumes the path crumbs are relative to the process working directory.
  */
-export const read2 = async (crumbs: string[], ...plugins: Plugin[]) => {
+export const read2 = async (
+  crumbs: string[],
+  ...plugins: Plugin[]
+): Promise<{
+  data: Record<string, unknown>;
+  matter: Record<string, unknown>;
+  minutes: number;
+  text: string;
+}> => {
   let processor = unified()
     .use(remarkDirective)
     .use(remarkFrontmatter)
