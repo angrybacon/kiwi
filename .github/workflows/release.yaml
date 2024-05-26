@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write # NOTE Enable use of OIDC for NPM provenance
+      id-token: write
       issues: write
       pull-requests: write
     steps:
@@ -61,7 +61,7 @@ jobs:
           node-version: lts/*
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm release
+      - run: pnpx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -9,5 +9,5 @@ export const remarkMinutes: Plugin = () => async (tree, file) => {
     text += (node as Literal).value;
   });
   const { minutes } = readingTime(text);
-  Object.assign(file.data, { minutes });
+  Object.assign(file.data, { minutes: minutes.toFixed(0) });
 };
