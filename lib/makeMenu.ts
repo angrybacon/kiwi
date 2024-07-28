@@ -9,8 +9,7 @@ export const makeMenu = (paths: [chapter: string, slug: string][]): Menu => {
     if (crumbs.length !== 2) {
       throw new Error(`Expect depth of 2 but got "${crumbs}"`);
     }
-    const [realChapter, realSlug] = crumbs;
-    const [chapter, slug] = [trim(realChapter), trim(realSlug)];
+    const [chapter, slug] = [trim(crumbs[0]), trim(crumbs[1])];
     if (!accumulator.get(chapter)) {
       accumulator.set(chapter, []);
     }

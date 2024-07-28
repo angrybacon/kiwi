@@ -1,50 +1,46 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import matter from 'gray-matter';
-import readingTime from 'reading-time';
+import remarkDirective from 'remark-directive';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { unified, type Plugin } from 'unified';
+
+import { remarkMatter } from './remarkMatter.ts';
+import { remarkMinutes } from './remarkMinutes.ts';
 
 /**
  * Read file found at the path described by the `crumbs` as Markdown and parse
- * the frontmatter found.
+ * its content.
  * This assumes the file extension is provided with the last crumb.
  * This assumes the path crumbs are relative to the process working directory.
- *
- * @deprecated Use `read2` instead
  */
-export const read = (
-  ...crumbs: string[]
-): {
-  banner?: string;
+export const read = async (
+  crumbs: string[],
+  ...plugins: Plugin[]
+): Promise<{
+  data: Record<string, unknown>;
   matter: Record<string, unknown>;
   minutes: number;
   text: string;
-  title?: string;
-} => {
-  const path = join(...crumbs);
-  const buffer = readFileSync(path, 'utf8');
-  try {
-    const { content, data } = matter(buffer);
-    const { banner, title } = data;
-    assertStringTypes({ banner, title });
-    return {
-      banner,
-      matter: data,
-      minutes: Math.ceil(readingTime(content).minutes),
-      text: content,
-      title,
-    };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : `${error}`;
-    throw new Error(`${message} in "${path}"`);
-  }
+}> => {
+  let processor = unified()
+    .use(remarkDirective)
+    .use(remarkFrontmatter)
+    .use(remarkMatter)
+    .use(remarkMinutes)
+    .use(remarkParse)
+    .use(remarkStringify);
+  processor = plugins.reduce<typeof processor>(
+    (accumulator, plugin) => accumulator.use(plugin),
+    processor,
+  );
+  const buffer = readFileSync(join(...crumbs));
+  const { data, value } = await processor.process(buffer);
+  return {
+    data,
+    matter: data.matter as Record<string, unknown>,
+    minutes: data.minutes as number,
+    text: String(value),
+  };
 };
-
-function assertStringTypes(
-  values: Record<string, unknown>,
-): asserts values is Record<string, string> {
-  Object.entries(values).forEach(([name, value]) => {
-    if (value !== undefined && typeof value !== 'string') {
-      throw new Error(`Wrong format for ${name} "${value}"`);
-    }
-  });
-}
