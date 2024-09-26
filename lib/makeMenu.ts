@@ -1,21 +1,23 @@
-const trim = (text: string): string => text.replace(/^\d+-/, '');
-
-type Entry = { label: string; path: string };
-
-export type Menu = [chapter: string, entries: Entry[]][];
-
-export const makeMenu = (paths: [chapter: string, slug: string][]): Menu => {
-  const menu = paths.reduce<Map<string, Entry[]>>((accumulator, crumbs) => {
-    if (crumbs.length !== 2) {
-      throw new Error(`Expect depth of 2 but got "${crumbs}"`);
-    }
-    const [chapter, slug] = [trim(crumbs[0]), trim(crumbs[1])];
-    if (!accumulator.get(chapter)) {
-      accumulator.set(chapter, []);
-    }
-    const nodes = accumulator.get(chapter)!;
-    nodes.push({ label: slug, path: `/${chapter}/${slug}` });
-    return accumulator;
-  }, new Map());
-  return Array.from(menu);
+/**
+ * Build an array of menu entries out of metadata cards.
+ * Cards are grouped together following the `category` property.
+ */
+export const makeMenu = <
+  TCategory extends string,
+  TCard extends { category: TCategory },
+>(
+  cards: TCard[],
+) => {
+  const menu = cards.reduce<Map<TCard['category'], TCard[]>>(
+    (accumulator, card) => {
+      if (!accumulator.get(card.category)) {
+        accumulator.set(card.category, []);
+      }
+      const nodes = accumulator.get(card.category)!;
+      nodes.push(card);
+      return accumulator;
+    },
+    new Map(),
+  );
+  return [...menu].map(([id, pages]) => ({ id, pages }));
 };

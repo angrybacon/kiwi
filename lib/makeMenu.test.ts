@@ -3,84 +3,73 @@ import { makeMenu } from './makeMenu.ts';
 describe(makeMenu.name, () => {
   it('should return menu entries', () => {
     // Given
-    const paths = [
-      ['a', 'a'],
-      ['a', 'b'],
-      ['b', 'a'],
-      ['b', 'b'],
-    ] as const satisfies [string, string][];
+    const cards = [
+      { category: 'ONE', title: 'Title A' },
+      { category: 'TWO', subtitle: 'Subtitle A', title: 'Title A' },
+      { category: 'TWO', subtitle: 'Subtitle B', title: 'Title B' },
+      { category: 'TWO', title: 'Title C' },
+      { category: 'THREE', title: 'Title A' },
+      { category: 'THREE', title: 'Title B' },
+    ];
     // When
-    const result = makeMenu(paths);
+    const result = makeMenu(cards);
     // Then
     expect(result).toEqual([
-      [
-        'a',
-        [
-          { label: 'a', path: '/a/a' },
-          { label: 'b', path: '/a/b' },
+      {
+        id: 'ONE',
+        pages: [{ category: 'ONE', title: 'Title A' }],
+      },
+      {
+        id: 'TWO',
+        pages: [
+          { category: 'TWO', subtitle: 'Subtitle A', title: 'Title A' },
+          { category: 'TWO', subtitle: 'Subtitle B', title: 'Title B' },
+          { category: 'TWO', title: 'Title C' },
         ],
-      ],
-      [
-        'b',
-        [
-          { label: 'a', path: '/b/a' },
-          { label: 'b', path: '/b/b' },
+      },
+      {
+        id: 'THREE',
+        pages: [
+          { category: 'THREE', title: 'Title A' },
+          { category: 'THREE', title: 'Title B' },
         ],
-      ],
+      },
     ]);
   });
 
-  it('should error if a path has less than 2 crumbs', () => {
+  it('should not alter the input order', () => {
     // Given
-    const paths = [['a'], ['b', 'a'], ['b', 'b']];
-    // When
-    // @ts-expect-error Force value for testing purposes
-    const f = () => makeMenu(paths);
-    // Then
-    expect(f).toThrow('Expect depth of 2 but got "a"');
-  });
-
-  it('should error if a path has less than 2 crumbs', () => {
-    // Given
-    const paths = [
-      ['a', 'a'],
-      ['a', 'b', 'c'],
-      ['b', 'a'],
-      ['b', 'b'],
+    const cards = [
+      { category: 'TWO', title: 'Title C' },
+      { category: 'THREE', title: 'Title A' },
+      { category: 'TWO', subtitle: 'Subtitle B', title: 'Title B' },
+      { category: 'TWO', subtitle: 'Subtitle A', title: 'Title A' },
+      { category: 'ONE', title: 'Title A' },
+      { category: 'THREE', title: 'Title B' },
     ];
     // When
-    // @ts-expect-error Force value for testing purposes
-    const f = () => makeMenu(paths);
-    // Then
-    expect(f).toThrow('Expect depth of 2 but got "a,b,c"');
-  });
-
-  it('should trim digit prefixes', () => {
-    // Given
-    const paths = [
-      ['01-a', 'a'],
-      ['01-a', 'b'],
-      ['b', '01-a'],
-      ['b', 'b'],
-    ] as const satisfies [string, string][];
-    // When
-    const result = makeMenu(paths);
+    const result = makeMenu(cards);
     // Then
     expect(result).toEqual([
-      [
-        'a',
-        [
-          { label: 'a', path: '/a/a' },
-          { label: 'b', path: '/a/b' },
+      {
+        id: 'TWO',
+        pages: [
+          { category: 'TWO', title: 'Title C' },
+          { category: 'TWO', subtitle: 'Subtitle B', title: 'Title B' },
+          { category: 'TWO', subtitle: 'Subtitle A', title: 'Title A' },
         ],
-      ],
-      [
-        'b',
-        [
-          { label: 'a', path: '/b/a' },
-          { label: 'b', path: '/b/b' },
+      },
+      {
+        id: 'THREE',
+        pages: [
+          { category: 'THREE', title: 'Title A' },
+          { category: 'THREE', title: 'Title B' },
         ],
-      ],
+      },
+      {
+        id: 'ONE',
+        pages: [{ category: 'ONE', title: 'Title A' }],
+      },
     ]);
   });
 });
