@@ -20,7 +20,7 @@ const parseToc = (node: RootContent, accumulator: Toc = {}): Toc => {
     case 'listItem':
       const [first, second] = node.children;
       if (!first) {
-        throw new Error('Missing "first" node in "listItem"');
+        throw new Error('Missing node "first" in "listItem"');
       }
       const heading = parseToc(first, {});
       if (second) {

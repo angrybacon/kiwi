@@ -1,6 +1,7 @@
 import { join } from 'node:path';
 
 import { read } from './read.ts';
+import { trimOrderPrefix } from './trimOrderPrefix.ts';
 
 /**
  * Read all the provided PATHS and read Markdown found to create data cards.
@@ -13,8 +14,7 @@ export const makeCards = async <
     (context: {
       crumbs: { [K in keyof TCrumbs]: string };
       matter: Record<string, unknown>;
-      path: string;
-    }) => any
+    }) => unknown
   >,
 >(
   input: { paths: TCrumbs[]; root: string },
@@ -26,27 +26,38 @@ export const makeCards = async <
   specifications: TSpecifications,
 ) =>
   Promise.all(
-    input.paths.map(async (crumbs) => {
-      const prettyCrumbs = crumbs.map((crumb) =>
-        crumb.replace(/^\d+-/, ''),
-      ) as { [K in keyof TCrumbs]: string };
-      const relativePath = join(...crumbs) + '.md';
-      const path = join(input.root, relativePath);
-      const { matter } = await read([path]);
-      const extra = Object.fromEntries(
-        Object.entries(specifications).map(([name, f]) => [
-          name,
-          f({ crumbs: prettyCrumbs, matter, path: relativePath }),
-        ]),
-      ) as { [K in keyof TSpecifications]: ReturnType<TSpecifications[K]> };
-      if (typeof matter.title !== 'string' || !matter.title.length) {
-        throw new Error(`Missing title in '${relativePath}'`);
-      }
-      return {
-        ...extra,
-        href: ['', ...prettyCrumbs].join('/'),
-        path,
-        title: matter.title,
+    input.paths.map(async (items) => {
+      const crumbs = items.map((crumb) => trimOrderPrefix(crumb)) as {
+        [K in keyof TCrumbs]: string;
       };
+      const id = crumbs.join('!');
+      const path = join(input.root, join(...items) + '.md');
+      const { matter } = await read([path]);
+      try {
+        if (typeof matter.title !== 'string' || !matter.title.length) {
+          throw new Error(`Invalid title`);
+        }
+        const extra = Object.fromEntries(
+          Object.entries(specifications).map(([name, f]) => {
+            try {
+              return [name, f({ crumbs: crumbs, matter })];
+            } catch (error) {
+              const message = error instanceof Error ? error.message : error;
+              throw new Error(`Invalid specification "${name}" ${message}`);
+            }
+          }),
+        ) as { [K in keyof TSpecifications]: ReturnType<TSpecifications[K]> };
+        return {
+          ...extra,
+          href: ['', ...crumbs].join('/'),
+          /** Identifier serialized from the crumbs for easy comparison. */
+          id,
+          path,
+          title: matter.title,
+        };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : error;
+        throw new Error(`${message} in "${id}"`);
+      }
     }),
   );
