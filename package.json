@@ -24,7 +24,7 @@
   "type": "module",
   "scripts": {
     "build": "tsup",
-    "lint": "pnpm run '/^lint:.+/'",
+    "lint": "pnpm run '/^lint:[^:]+$/'",
     "lint:format": "prettier --check --log-level warn lib/",
     "lint:typings": "tsc",
     "test": "jest",

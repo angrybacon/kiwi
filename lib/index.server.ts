@@ -5,4 +5,5 @@ export * from './makeToc.ts';
 export * from './read.ts';
 export * from './remarkMatter.ts';
 export * from './remarkMinutes.ts';
+export * from './trimOrderPrefix.ts';
 export * from './walk.ts';

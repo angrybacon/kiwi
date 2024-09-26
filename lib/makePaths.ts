@@ -1,4 +1,4 @@
-const trim = (text: string) => text.replace(/^\d+-/, '');
+import { trimOrderPrefix } from './trimOrderPrefix.ts';
 
 /**
  * Make a dictionary of path crumbs out of the provided tree of files.
@@ -12,7 +12,10 @@ const trim = (text: string) => text.replace(/^\d+-/, '');
 export const makePaths = (paths: [chapter: string, slug: string][]) =>
   paths.reduce<Record<string, Record<string, string[]>>>(
     (accumulator, [realChapter, realSlug]) => {
-      const [chapter, slug] = [trim(realChapter), trim(realSlug)];
+      const [chapter, slug] = [
+        trimOrderPrefix(realChapter),
+        trimOrderPrefix(realSlug),
+      ];
       const path = (accumulator[chapter] ??= {});
       path[slug] = [realChapter, `${realSlug}.md`];
       return accumulator;

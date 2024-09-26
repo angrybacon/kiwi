@@ -1,3 +1,5 @@
+import { trimOrderPrefix } from './trimOrderPrefix.ts';
+
 /**
  * Loop over the provided `paths` and return an array of named routes.
  *
@@ -19,10 +21,10 @@ export const makeNextRoutes = <
         `Found orphan at "${crumbs}", expected depth of ${names.length}`,
       );
     }
-    return names.reduce(
+    return names.reduce<TRoute>(
       (route, name, index) => ({
         ...route,
-        [name]: crumbs[index]?.replace(/^\d+-/, ''),
+        [name]: crumbs[index] && trimOrderPrefix(crumbs[index]),
       }),
       {} as TRoute,
     );
