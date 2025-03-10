@@ -4,10 +4,14 @@ import { remark } from 'remark';
 
 export type Toc = { items?: Toc[]; title?: string; url?: string };
 
+/** Pull and join text nodes from the provided tokens, recursively */
 const flatten = (tokens: PhrasingContent[]): string =>
   tokens.reduce((accumulator, token) => {
+    if ('children' in token) {
+      return accumulator + flatten(token.children);
+    }
     if (token.type !== 'text') {
-      throw new Error(`Found unsupported node type in heading "${token}"`);
+      throw new Error(`Found unsupported node type in heading "${token.type}"`);
     }
     return accumulator + token.value;
   }, '');
