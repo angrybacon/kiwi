@@ -1,5 +1,5 @@
 import { type PhrasingContent, type Root, type RootContent } from 'mdast';
-import { toc } from 'mdast-util-toc';
+import { toc, type Options } from 'mdast-util-toc';
 import { remark } from 'remark';
 
 export type Toc = { items?: Toc[]; title?: string; url?: string };
@@ -42,10 +42,16 @@ const parseToc = (node: RootContent, accumulator: Toc = {}): Toc => {
   return accumulator;
 };
 
-export const makeToc = (content: string): Toc => {
+/**
+ * Parse the provided Markdown string and spit out a table of content.
+ * The structure is recursive in order to allow up the 6 heading levels.
+ * The supported options come from `mdast-util-toc` and are passed through
+ * unaltered.
+ */
+export const makeToc = (content: string, options?: Options): Toc => {
   const { data } = remark()
     .use(() => (node: Root, output) => {
-      const { map } = toc(node);
+      const { map } = toc(node, options);
       output.data = map ? parseToc(map) : {};
     })
     .processSync(content);
