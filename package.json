@@ -39,7 +39,7 @@
     "remark-frontmatter": "5.0.0",
     "remark-parse": "11.0.0",
     "remark-stringify": "11.0.0",
-    "unified": "11.0.4",
+    "unified": "11.0.5",
     "unist-util-remove": "4.0.0",
     "unist-util-visit": "5.0.0",
     "vfile-matter": "5.0.0"

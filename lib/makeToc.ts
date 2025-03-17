@@ -2,7 +2,11 @@ import { type PhrasingContent, type Root, type RootContent } from 'mdast';
 import { toc, type Options } from 'mdast-util-toc';
 import { remark } from 'remark';
 
-export type Toc = { items?: Toc[]; title?: string; url?: string };
+export type Toc = {
+  items?: Toc[];
+  title?: string;
+  url?: string;
+};
 
 /** Pull and join text nodes from the provided tokens, recursively */
 const flatten = (tokens: PhrasingContent[]): string =>
@@ -48,12 +52,12 @@ const parseToc = (node: RootContent, accumulator: Toc = {}): Toc => {
  * The supported options come from `mdast-util-toc` and are passed through
  * unaltered.
  */
-export const makeToc = (content: string, options?: Options): Toc => {
+export const makeToc = (content: string, options?: Options) => {
   const { data } = remark()
     .use(() => (node: Root, output) => {
       const { map } = toc(node, options);
       output.data = map ? parseToc(map) : {};
     })
     .processSync(content);
-  return data;
+  return data as Toc;
 };
