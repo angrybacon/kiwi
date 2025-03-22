@@ -25,8 +25,11 @@ export function hastify<TDirective extends Directive, TExtra extends object>(
     hProperties: NonNullable<TDirective['data']>['hProperties'] & TExtra;
   };
 } {
-  const { attributes, data, name } = directive;
-  directive.data = data || {};
-  directive.data.hName = name;
-  directive.data.hProperties = { ...attributes, ...extra };
+  directive.data = directive.data || {};
+  directive.data.hName = directive.name;
+  directive.data.hProperties = {
+    ...directive.data.hProperties,
+    ...directive.attributes,
+    ...extra,
+  };
 }
