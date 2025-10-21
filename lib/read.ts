@@ -10,13 +10,13 @@ import { remarkMatter } from './remarkMatter.ts';
 import { remarkMinutes } from './remarkMinutes.ts';
 
 /**
- * Read file found at the path described by the `crumbs` as Markdown and parse
- * its content.
- * This assumes the file extension is provided with the last crumb.
- * This assumes the path crumbs are relative to the process working directory.
+ * Read and parse Markdown file found at the path described by TARGET.
+ *
+ * If TARGET is a string, use it directly. Otherwise, join CRUMBS under ROOT and
+ * append the file extension automatically.
  */
 export const read = async (
-  crumbs: string[],
+  target: string | { crumbs: readonly string[]; root: string },
   ...plugins: Plugin[]
 ): Promise<{
   data: Record<string, unknown>;
@@ -35,7 +35,9 @@ export const read = async (
     (accumulator, plugin) => accumulator.use(plugin),
     processor,
   );
-  const buffer = readFileSync(join(...crumbs));
+  const path =
+    typeof target === 'string' ? target : join(target.root, ...target.crumbs);
+  const buffer = readFileSync(path + '.md');
   const { data, value } = await processor.process(buffer);
   return {
     data,

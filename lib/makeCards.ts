@@ -32,7 +32,7 @@ export const makeCards = async <
       };
       const id = crumbs.join('!');
       const path = join(input.root, ...items) + '.md';
-      const { matter } = await read([path]);
+      const { matter } = await read(path);
       try {
         if (typeof matter.title !== 'string' || !matter.title.length) {
           throw new Error(`Invalid title`);
