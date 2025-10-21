@@ -4,7 +4,7 @@ import { read } from './read.ts';
 import { trimOrderPrefix } from './trimOrderPrefix.ts';
 
 /**
- * Read all the provided PATHS and read Markdown found to create data cards.
+ * Read the provided PATHS under ROOT and create data cards.
  * Loop over SPECIFICATIONS entries and augment each card with it.
  */
 export const makeCards = async <
@@ -31,7 +31,7 @@ export const makeCards = async <
         [K in keyof TCrumbs]: string;
       };
       const id = crumbs.join('!');
-      const path = join(input.root, join(...items) + '.md');
+      const path = join(input.root, ...items) + '.md';
       const { matter } = await read([path]);
       try {
         if (typeof matter.title !== 'string' || !matter.title.length) {
@@ -42,22 +42,20 @@ export const makeCards = async <
             try {
               return [name, f({ crumbs: crumbs, matter })];
             } catch (error) {
-              const message = error instanceof Error ? error.message : error;
-              throw new Error(`Invalid specification "${name}" ${message}`);
+              throw new Error(`Invalid specification "${name}". ${error}`);
             }
           }),
         ) as { [K in keyof TSpecifications]: ReturnType<TSpecifications[K]> };
         return {
           ...extra,
           href: ['', ...crumbs].join('/'),
-          /** Identifier serialized from the crumbs for easy comparison. */
+          /** Identifier serialized from the crumbs for easy comparison */
           id,
           path,
           title: matter.title,
         };
       } catch (error) {
-        const message = error instanceof Error ? error.message : error;
-        throw new Error(`${message} in "${id}"`);
+        throw new Error(`${error} in "${id}"`);
       }
     }),
   );

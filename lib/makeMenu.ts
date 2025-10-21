@@ -1,5 +1,5 @@
 /**
- * Build an array of menu entries out of metadata cards.
+ * Build an array of menu entries out of metadata CARDS.
  * Cards are grouped together following the `category` property.
  */
 export const makeMenu = <

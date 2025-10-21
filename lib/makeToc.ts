@@ -8,7 +8,7 @@ export type Toc = {
   url?: string;
 };
 
-/** Pull and join text nodes from the provided tokens, recursively */
+/** Pull and join text nodes from the provided TOKENS, recursively */
 const flatten = (tokens: PhrasingContent[]): string =>
   tokens.reduce((accumulator, token) => {
     if ('children' in token) {
@@ -47,9 +47,9 @@ const parseToc = (node: RootContent, accumulator: Toc = {}): Toc => {
 };
 
 /**
- * Parse the provided Markdown string and spit out a table of content.
+ * Parse the provided CONTENT Markdown string and spit out a table of content.
  * The structure is recursive in order to allow up the 6 heading levels.
- * The supported options come from `mdast-util-toc` and are passed through
+ * The supported OPTIONS come from `mdast-util-toc` and are passed through
  * unaltered.
  */
 export const makeToc = (content: string, options?: Options) => {

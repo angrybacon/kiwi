@@ -2,11 +2,15 @@ import { existsSync, readdirSync } from 'fs';
 import { join, parse } from 'node:path';
 
 /**
- * Generator to walk through `directory` and yield all of its files.
+ * Generator to walk through DIRECTORY and yield all of its files.
+ *
  * Return a tuple containing all successive parent folders followed by the file
  * with their extension.
- * When `extension` is specified, only return files that match.
+ *
+ * When EXTENSION is specified, only return files that match.
  * Prefer synchronous exploration since order matters.
+ *
+ * The ACCUMULATOR functions the same as in a standard `Array.reduce` method.
  */
 function* walkIterator(
   directory: string,
@@ -27,9 +31,8 @@ function* walkIterator(
 }
 
 /**
- * Traverse down `directory` and return an array of tuples corresponding to all
- * paths found within. Sort the output.
- * Limit results to `options.extension` if provided.
+ * Traverse down DIRECTORY and return an array of path tuples.
+ * Sort the output and limit results to EXTENSION if provided.
  */
 export const walk = (
   directory: string,

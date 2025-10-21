@@ -1,7 +1,7 @@
 import { trimOrderPrefix } from './trimOrderPrefix.ts';
 
 /**
- * Loop over the provided `paths` and return an array of named routes.
+ * Loop over the provided PATHS and use NAMES to group routes.
  *
  * The output is meant to be used with the Next.js _app_ router (_pages_ router
  * not supported).

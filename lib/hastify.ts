@@ -5,7 +5,7 @@ type Directive = {
 };
 
 /**
- * Augment the input directive with the provided extra properties.
+ * Augment the input DIRECTIVE with the provided EXTRA properties.
  *
  * This also asserts that the output directive has the expected well-formed
  * properties.

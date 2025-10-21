@@ -1,7 +1,7 @@
 import { trimOrderPrefix } from './trimOrderPrefix.ts';
 
 /**
- * Make a dictionary of path crumbs out of the provided tree of files.
+ * Make a dictionary of path crumbs out of the provided tree of PATHS.
  *
  * Expect the tree to have a depth of 2 where for each path tuple, the first
  * item is the chapter name and the second item corrspond to the chapter slug.
