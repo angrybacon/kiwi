@@ -1,9 +1,10 @@
 import { readFileSync } from 'fs';
 import { vol } from 'memfs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { walk } from './walk.ts';
 
-jest.mock('fs', () => require('memfs'));
+vi.mock('fs', () => require('memfs'));
 
 describe(walk.name, () => {
   beforeEach(() => {

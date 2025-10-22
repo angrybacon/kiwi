@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { makeMenu } from './makeMenu.ts';
 
 describe(makeMenu.name, () => {

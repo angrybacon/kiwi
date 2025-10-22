@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { makePaths } from './makePaths.ts';
 
 describe(makePaths.name, () => {
