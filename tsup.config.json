@@ -1,9 +1,0 @@
-{
-  "clean": true,
-  "dts": true,
-  "entry": ["lib/index.client.ts", "lib/index.server.ts"],
-  "format": ["esm"],
-  "outDir": "dist",
-  "splitting": true,
-  "treeshake": true
-}

@@ -1,3 +1,4 @@
+export * from './hastify.ts';
 export * from './makeCards.ts';
 export * from './makeMenu.ts';
 export * from './makeNextRoutes.ts';

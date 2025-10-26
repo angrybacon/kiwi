@@ -49,12 +49,12 @@
     "@types/mdast": "4.0.4",
     "@types/node": "22.18.10",
     "@types/unist": "3.0.3",
-    "@vitest/coverage-v8": "4.0.1",
+    "@vitest/coverage-v8": "4.0.3",
     "memfs": "4.49.0",
     "prettier": "3.6.2",
     "ts-node": "10.9.2",
     "tsup": "8.5.0",
     "typescript": "5.9.3",
-    "vitest": "4.0.1"
+    "vitest": "4.0.3"
   }
 }
