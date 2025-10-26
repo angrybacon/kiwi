@@ -14,14 +14,22 @@ import { remarkMinutes } from './remarkMinutes.ts';
  *
  * If TARGET is a string, use it directly. Otherwise, join CRUMBS under ROOT and
  * append the file extension automatically.
+ *
+ * Chain Remark PLUGINS in serie after all the base plugins have been applied.
  */
 export const read = async (
   target: string | { crumbs: readonly string[]; root: string },
   ...plugins: Plugin[]
 ): Promise<{
+  /** Dictionary containing the plugin output */
   data: Record<string, unknown>;
+  /** Dictionary of matter data found in the Markdown */
   matter: Record<string, unknown>;
+  /** Estimated reading time of the whole document */
   minutes: number;
+  /** Full path of the target */
+  path: string;
+  /** Markdown-formatted string found in the document */
   text: string;
 }> => {
   let processor = unified()
@@ -36,13 +44,16 @@ export const read = async (
     processor,
   );
   const path =
-    typeof target === 'string' ? target : join(target.root, ...target.crumbs);
-  const buffer = readFileSync(path + '.md');
+    typeof target === 'string'
+      ? target
+      : join(target.root, ...target.crumbs) + '.md';
+  const buffer = readFileSync(path);
   const { data, value } = await processor.process(buffer);
   return {
     data,
     matter: data.matter as Record<string, unknown>,
     minutes: data.minutes as number,
+    path,
     text: String(value),
   };
 };
