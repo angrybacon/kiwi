@@ -21,7 +21,7 @@ export const read = async (
   target: string | { crumbs: readonly string[]; root: string },
   ...plugins: Plugin[]
 ): Promise<{
-  /** Dictionary containing the plugin output */
+  /** Dictionary containing the plugins output */
   data: Record<string, unknown>;
   /** Dictionary of matter data found in the Markdown */
   matter: Record<string, unknown>;
@@ -48,11 +48,14 @@ export const read = async (
       ? target
       : join(target.root, ...target.crumbs) + '.md';
   const buffer = readFileSync(path);
-  const { data, value } = await processor.process(buffer);
+  const {
+    data: { matter, minutes, ...data },
+    value,
+  } = await processor.process(buffer);
   return {
     data,
-    matter: data.matter as Record<string, unknown>,
-    minutes: data.minutes as number,
+    matter: matter as Record<string, unknown>,
+    minutes: minutes as number,
     path,
     text: String(value),
   };

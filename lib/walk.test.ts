@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { walk } from './walk.ts';
 
-vi.mock('fs', () => require('memfs'));
+vi.mock('node:fs', () => require('memfs'));
 
 describe(walk.name, () => {
   beforeEach(() => {
