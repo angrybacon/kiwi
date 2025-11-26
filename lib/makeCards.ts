@@ -4,7 +4,7 @@ import { read } from './read.ts';
 import { trimOrderPrefix } from './trimOrderPrefix.ts';
 
 /**
- * Read the provided PATHS under ROOT and create data cards.
+ * Read the provided PATHS under ROOT and make a dictionary of data cards.
  * Loop over SPECIFICATIONS entries and augment each card with it.
  */
 export const makeCards = async <
@@ -18,11 +18,7 @@ export const makeCards = async <
   >,
 >(
   input: { paths: TCrumbs[]; root: string },
-  /**
-   * The specification table to augment the card with.
-   * Both `href` and `title` are already managed by this function and are
-   * ignored.
-   */
+  /** The specification table to augment the card with */
   specifications: TSpecifications,
 ) =>
   Promise.all(
@@ -34,13 +30,10 @@ export const makeCards = async <
       const path = join(input.root, ...items) + '.md';
       const { matter } = await read(path);
       try {
-        if (typeof matter.title !== 'string' || !matter.title.length) {
-          throw new Error(`Invalid title`);
-        }
         const extra = Object.fromEntries(
           Object.entries(specifications).map(([name, f]) => {
             try {
-              return [name, f({ crumbs: crumbs, matter })];
+              return [name, f({ crumbs, matter })];
             } catch (error) {
               throw new Error(`Invalid specification "${name}". ${error}`);
             }
@@ -52,7 +45,6 @@ export const makeCards = async <
           /** Identifier serialized from the crumbs for easy comparison */
           id,
           path,
-          title: matter.title,
         };
       } catch (error) {
         throw new Error(`${error} in "${id}"`);
