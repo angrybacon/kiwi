@@ -5,6 +5,7 @@ import { trimOrderPrefix } from './trimOrderPrefix.ts';
 
 /**
  * Read the provided PATHS under ROOT and make a dictionary of data cards.
+ * Use the optional PREFIX in order to build the resulting href for each card.
  * Loop over SPECIFICATIONS entries and augment each card with it.
  */
 export const makeCards = async <
@@ -17,7 +18,7 @@ export const makeCards = async <
     }) => unknown
   >,
 >(
-  input: { paths: TCrumbs[]; root: string },
+  input: { paths: TCrumbs[]; prefix?: `/${string}`; root: string },
   /** The specification table to augment the card with */
   specifications: TSpecifications,
 ) =>
@@ -41,7 +42,7 @@ export const makeCards = async <
         ) as { [K in keyof TSpecifications]: ReturnType<TSpecifications[K]> };
         return {
           ...extra,
-          href: ['', ...crumbs].join('/'),
+          href: [input.prefix || '', ...crumbs].join('/'),
           /** Identifier serialized from the crumbs for easy comparison */
           id,
           path,
