@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { type Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkParse from 'remark-parse';
@@ -19,7 +20,7 @@ import { remarkMinutes } from './remarkMinutes.ts';
  */
 export const read = async (
   target: string | { crumbs: readonly string[]; root: string },
-  ...plugins: Plugin[]
+  ...plugins: Plugin<[], Root>[]
 ): Promise<{
   /** Dictionary containing the plugins output */
   data: Record<string, unknown>;
