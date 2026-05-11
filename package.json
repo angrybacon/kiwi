@@ -5,6 +5,9 @@
       "types": "./dist/index.d.mts"
     }
   },
+  "files": [
+    "dist/"
+  ],
   "license": "MIT",
   "name": "@korumite/kiwi",
   "publishConfig": {
