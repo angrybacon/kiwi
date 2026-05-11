@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { makePaths } from './makePaths.ts';
+import { makePaths } from './makePaths';
 
 describe(makePaths.name, () => {
   it('should yield well-formed crumbs from the provided tree', () => {

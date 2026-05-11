@@ -3,7 +3,7 @@ import { vol } from 'memfs';
 import type { Plugin } from 'unified';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { read } from './read.ts';
+import { read } from './read';
 
 vi.mock('node:fs', () => require('memfs'));
 

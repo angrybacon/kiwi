@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { makeNextRoutes } from './makeNextRoutes.ts';
+import { makeNextRoutes } from './makeNextRoutes';
 
 describe(makeNextRoutes.name, () => {
   it('should yield well-formed routes with the provided names', () => {

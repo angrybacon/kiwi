@@ -1,7 +1,7 @@
-import { type Root } from 'mdast';
+import type { Root } from 'mdast';
 import readingTime from 'reading-time';
 import { type Plugin } from 'unified';
-import { type Literal } from 'unist';
+import type { Literal } from 'unist';
 import { visit } from 'unist-util-visit';
 
 export const remarkMinutes: Plugin<[], Root> = () => async (tree, file) => {

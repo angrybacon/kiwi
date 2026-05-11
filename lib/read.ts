@@ -1,14 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { type Root } from 'mdast';
+import type { Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { unified, type Plugin } from 'unified';
 
-import { remarkMatter } from './remarkMatter.ts';
-import { remarkMinutes } from './remarkMinutes.ts';
+import { remarkMatter } from './remarkMatter';
+import { remarkMinutes } from './remarkMinutes';
 
 /**
  * Read and parse Markdown file found at the path described by TARGET.

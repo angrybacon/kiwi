@@ -1,13 +1,7 @@
 {
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "nodenext",
-    "noEmit": true,
-    "noUncheckedIndexedAccess": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "es2016"
-  }
+    "moduleResolution": "bundler",
+    "noEmit": true
+  },
+  "extends": "./node_modules/@korumite/ts/tsconfig.nodom.json"
 }

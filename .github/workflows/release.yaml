@@ -5,8 +5,10 @@ on: push
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
+  issues: write
+  pull-requests: write
 
 jobs:
   lint:
@@ -15,17 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - name: Set up PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
-          node-version: lts/*
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        uses: ./.github/actions/setup
       - name: Run lint tasks
         run: pnpm lint
 
@@ -39,17 +32,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - name: Set up PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
-          node-version: ${{ matrix.node }}
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        uses: ./.github/actions/setup
+        with:
+          node-version: ${{ matrix.node }}
       - name: Run tests
         run: pnpm test:coverage
       - name: Report coverage
@@ -61,25 +47,11 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: [lint, tests]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
-      issues: write
-      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - name: Set up PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
-          node-version: lts/*
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        uses: ./.github/actions/setup
       - name: Run build
         run: pnpm build
       - name: Deploy semantic release

@@ -1,4 +1,4 @@
-import { type PhrasingContent, type Root, type RootContent } from 'mdast';
+import type { PhrasingContent, Root, RootContent } from 'mdast';
 import { toc, type Options } from 'mdast-util-toc';
 import { remark } from 'remark';
 

@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { vol } from 'memfs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { walk } from './walk.ts';
+import { walk } from './walk';
 
 vi.mock('node:fs', () => require('memfs'));
 

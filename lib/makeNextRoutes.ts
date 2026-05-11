@@ -1,4 +1,4 @@
-import { trimOrderPrefix } from './trimOrderPrefix.ts';
+import { trimOrderPrefix } from './trimOrderPrefix';
 
 /**
  * Loop over the provided PATHS and use NAMES to group routes.

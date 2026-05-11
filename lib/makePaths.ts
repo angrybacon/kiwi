@@ -1,4 +1,4 @@
-import { trimOrderPrefix } from './trimOrderPrefix.ts';
+import { trimOrderPrefix } from './trimOrderPrefix';
 
 /**
  * Make a dictionary of path crumbs out of the provided tree of PATHS.

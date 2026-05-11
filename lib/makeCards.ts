@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 
-import { read } from './read.ts';
-import { trimOrderPrefix } from './trimOrderPrefix.ts';
+import { read } from './read';
+import { trimOrderPrefix } from './trimOrderPrefix';
 
 /**
  * Read the provided PATHS under ROOT and make a dictionary of data cards.
