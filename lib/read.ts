@@ -10,6 +10,11 @@ import { unified, type Plugin } from 'unified';
 import { remarkMatter } from './remarkMatter';
 import { remarkMinutes } from './remarkMinutes';
 
+export type ReadPlugin<TParameters extends unknown[] = []> = Plugin<
+  TParameters,
+  Root
+>;
+
 /**
  * Read and parse Markdown file found at the path described by TARGET.
  *
@@ -20,7 +25,7 @@ import { remarkMinutes } from './remarkMinutes';
  */
 export const read = async (
   target: string | { crumbs: readonly string[]; root: string },
-  ...plugins: Plugin<[], Root>[]
+  ...plugins: ReadPlugin[]
 ): Promise<{
   /** Dictionary containing the plugins output */
   data: Record<string, unknown>;
