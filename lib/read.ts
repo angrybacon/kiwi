@@ -10,6 +10,8 @@ import { unified, type Plugin } from 'unified';
 import { remarkMatter } from './remarkMatter';
 import { remarkMinutes } from './remarkMinutes';
 
+import 'mdast-util-directive';
+
 export type ReadPlugin<TParameters extends unknown[] = []> = Plugin<
   TParameters,
   Root
