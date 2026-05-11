@@ -17,6 +17,8 @@ export type ReadPlugin<TParameters extends unknown[] = []> = Plugin<
   Root
 >;
 
+export type { Root };
+
 /**
  * Read and parse Markdown file found at the path described by TARGET.
  *
