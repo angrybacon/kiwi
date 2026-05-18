@@ -1,3 +1,4 @@
+/// <reference types="mdast-util-directive" />
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Root } from 'mdast';
@@ -9,8 +10,6 @@ import { unified, type Plugin } from 'unified';
 
 import { remarkMatter } from './remarkMatter';
 import { remarkMinutes } from './remarkMinutes';
-
-import 'mdast-util-directive';
 
 export type ReadPlugin<TParameters extends unknown[] = []> = Plugin<
   TParameters,
