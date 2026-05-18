@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { vol } from 'memfs';
-import type { Plugin } from 'unified';
+import { type Plugin } from 'unified';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { read } from './read';

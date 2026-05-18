@@ -1,7 +1,7 @@
 /// <reference types="mdast-util-directive" />
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Root } from 'mdast';
+import { type Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkParse from 'remark-parse';
@@ -15,8 +15,6 @@ export type ReadPlugin<TParameters extends unknown[] = []> = Plugin<
   TParameters,
   Root
 >;
-
-export type { Root };
 
 /**
  * Read and parse Markdown file found at the path described by TARGET.
