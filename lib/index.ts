@@ -1,3 +1,4 @@
+export * from './RemarkError';
 export * from './hastify';
 export * from './makeCards';
 export * from './makeMenu';
