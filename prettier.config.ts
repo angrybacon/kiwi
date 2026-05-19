@@ -9,6 +9,7 @@ export default {
     '',
     '^[.]',
   ],
+  importOrderCaseSensitive: true,
   plugins: ['@ianvs/prettier-plugin-sort-imports'],
   singleQuote: true,
 } satisfies Config;
