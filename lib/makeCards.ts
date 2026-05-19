@@ -5,8 +5,11 @@ import { trimOrderPrefix } from './trimOrderPrefix';
 
 /**
  * Read the provided PATHS under ROOT and make a dictionary of data cards.
+ *
  * Use the optional PREFIX in order to build the resulting href for each card.
  * Loop over SPECIFICATIONS entries and augment each card with it.
+ *
+ * Caller responsible for keeping PATHS bounded.
  */
 export const makeCards = async <
   TCrumbs extends readonly [string, ...string[]],

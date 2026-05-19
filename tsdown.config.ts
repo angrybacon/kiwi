@@ -6,5 +6,6 @@ export default defineConfig({
   entry: 'lib/index.ts',
   format: ['esm'],
   outDir: 'dist',
+  target: 'node20',
   treeshake: true,
 });

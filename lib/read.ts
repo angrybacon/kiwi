@@ -10,6 +10,7 @@ import { unified, type Plugin } from 'unified';
 import { remarkMatter } from './remarkMatter';
 import { remarkMinutes } from './remarkMinutes';
 
+// NOTE Re-export directive types so that consumers don't need the dependency
 export type * from 'mdast-util-directive';
 
 export type ReadPlugin<TParameters extends unknown[] = []> = Plugin<
@@ -40,16 +41,15 @@ export const read = async (
   /** Markdown-formatted string found in the document */
   text: string;
 }> => {
-  let processor = unified()
-    .use(remarkDirective)
-    .use(remarkFrontmatter)
-    .use(remarkMatter)
-    .use(remarkMinutes)
-    .use(remarkParse)
-    .use(remarkStringify);
-  processor = plugins.reduce<typeof processor>(
+  const processor = plugins.reduce(
     (accumulator, plugin) => accumulator.use(plugin),
-    processor,
+    unified()
+      .use(remarkDirective)
+      .use(remarkFrontmatter)
+      .use(remarkMatter)
+      .use(remarkMinutes)
+      .use(remarkParse)
+      .use(remarkStringify),
   );
   const path =
     typeof target === 'string'

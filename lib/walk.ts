@@ -39,5 +39,5 @@ export const walk = (
   options: { extension?: string } = {},
 ): string[][] => {
   const paths = Array.from(walkIterator(directory, options.extension));
-  return paths.sort((a, b) => a.join().localeCompare(b.join()));
+  return paths.sort((a, b) => a.join('/').localeCompare(b.join('/')));
 };

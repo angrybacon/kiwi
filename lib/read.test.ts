@@ -30,7 +30,7 @@ describe(read.name, () => {
     expect(result).toEqual({
       data: {},
       matter: {},
-      minutes: '0',
+      minutes: 0,
       path: '/a/a.md',
       text: '# Title\n',
     });
@@ -45,7 +45,7 @@ describe(read.name, () => {
     expect(result).toEqual({
       data: {},
       matter: {},
-      minutes: '0',
+      minutes: 0,
       path: '/a/a.md',
       text: '# Title\n',
     });
@@ -87,7 +87,7 @@ two: Two
     expect(result).toEqual({
       data: {},
       matter: { one: 'One', two: 'Two' },
-      minutes: '0',
+      minutes: 0,
       path: '/a/a.md',
       text: '# Title\n',
     });
