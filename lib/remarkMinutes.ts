@@ -1,9 +1,9 @@
-import { type Root } from 'mdast';
 import readingTime from 'reading-time';
-import { type Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
 
-export const remarkMinutes: Plugin<[], Root> = () => async (tree, file) => {
+import { type ReadPlugin } from './read';
+
+export const remarkMinutes: ReadPlugin = () => async (tree, file) => {
   let text = '';
   visit(tree, 'text', (node) => void (text += node.value));
   const { minutes } = readingTime(text);
