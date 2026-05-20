@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/setup
         with:
-          node-version: 24
+          node-version: 26
       - name: Run lint tasks
         run: pnpm lint
 
@@ -29,7 +29,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: [20.x, 22.x, 24.x]
+        node: [22, 24, 26]
         os: [macos-latest, ubuntu-latest]
     steps:
       - name: Checkout repository
@@ -55,7 +55,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/setup
         with:
-          node-version: 24
+          node-version: 26
       - name: Run build
         run: pnpm build
       - name: Deploy semantic release
