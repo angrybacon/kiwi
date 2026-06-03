@@ -14,9 +14,13 @@ type Directive = {
  * HTML-supported attributes in the resulting `hProperties` map. Since we need
  * more complex data, we cheat and use that very map to transport data from
  * remarkers to renderers. This might make HAST gurus cringe a lot but heh it
- * works.
+ * works. HAST's JSX runtime transformer will transport `hProperties` content
+ * to the node element.
  */
-export function hastify<TDirective extends Directive, TExtra extends object>(
+export function hastify<
+  TDirective extends Directive,
+  TExtra extends Record<string, unknown>,
+>(
   directive: TDirective,
   extra: TExtra,
 ): asserts directive is TDirective & {

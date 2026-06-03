@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from 'fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join, parse } from 'node:path';
 
 /**

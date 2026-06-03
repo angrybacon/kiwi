@@ -13,6 +13,7 @@
   ],
   "license": "MIT",
   "name": "@korumite/kiwi",
+  "packageManager": "pnpm@11.5.1",
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -24,13 +25,13 @@
   "type": "module",
   "scripts": {
     "build": "tsdown",
-    "lint": "pnpm run --aggregate-output '/^lint:[^:]+$/'",
+    "lint": "pnpm run '/^lint:[^:]+$/'",
     "lint:format": "prettier --check --log-level warn lib/",
     "lint:prune": "knip",
     "lint:typings": "tsc",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest"
+    "test": "vitest run --reporter=dot",
+    "test:coverage": "pnpm run test --coverage",
+    "test:watch": "pnpm run test --watch"
   },
   "dependencies": {
     "@types/mdast": "4.0.4",
@@ -49,14 +50,14 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",
-    "@korumite/ts": "1.5.0",
+    "@korumite/ts": "1.6.0",
     "@types/node": "25.9.1",
-    "@vitest/coverage-v8": "4.1.7",
-    "knip": "6.14.1",
-    "memfs": "4.57.2",
+    "@vitest/coverage-v8": "4.1.8",
+    "knip": "6.15.0",
+    "memfs": "4.57.3",
     "prettier": "3.8.3",
-    "tsdown": "0.22.0",
+    "tsdown": "0.22.1",
     "typescript": "6.0.3",
-    "vitest": "4.1.7"
+    "vitest": "4.1.8"
   }
 }
