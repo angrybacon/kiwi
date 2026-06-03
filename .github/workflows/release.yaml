@@ -61,4 +61,4 @@ jobs:
       - name: Deploy semantic release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpx semantic-release
+        run: npx semantic-release
