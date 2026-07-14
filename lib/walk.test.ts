@@ -4,9 +4,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { walk } from './walk';
 
-vi.mock('node:fs', () => require('memfs'));
+vi.mock('node:fs', () => import('memfs'));
 
-describe(walk.name, () => {
+describe(walk, () => {
   beforeEach(() => {
     vol.reset();
   });

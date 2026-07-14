@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { makeMenu } from './makeMenu';
 
-describe(makeMenu.name, () => {
+describe(makeMenu, () => {
   it('should return menu entries', () => {
     // Given
     const cards = [

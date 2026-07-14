@@ -1,4 +1,4 @@
-const PREFIX = /^\d+-/;
+const PREFIX = /^\d+-/u;
 
 /** Strip the order prefix from INPUT and return the resulting string */
 export const trimOrderPrefix = (input: string) => input.replace(PREFIX, '');

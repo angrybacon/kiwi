@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { makeNextRoutes } from './makeNextRoutes';
 
-describe(makeNextRoutes.name, () => {
+describe(makeNextRoutes, () => {
   it('should yield well-formed routes with the provided names', () => {
     // Given
     const paths = [
@@ -39,7 +39,7 @@ describe(makeNextRoutes.name, () => {
     // When
     const f = () => makeNextRoutes(paths, ['one', 'two']);
     // Then
-    expect(f).toThrow(/Found orphan.+expected depth of 2/);
+    expect(f).toThrow(/Found orphan.+expected depth of 2/u);
   });
 
   it('should trim digit prefixes', () => {

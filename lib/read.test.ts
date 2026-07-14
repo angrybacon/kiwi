@@ -1,13 +1,14 @@
+import type { ReadPlugin } from './read';
+
 import { readFileSync } from 'node:fs';
 import { vol } from 'memfs';
-import { type Plugin } from 'unified';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { read } from './read';
 
-vi.mock('node:fs', () => require('memfs'));
+vi.mock('node:fs', () => import('memfs'));
 
-describe(read.name, () => {
+describe(read, () => {
   beforeEach(() => {
     vol.reset();
   });
@@ -54,12 +55,12 @@ describe(read.name, () => {
   it('should incorporate and run custom plugins', async () => {
     // Given
     vol.fromJSON({ 'a/a.md': '# Title' }, '/');
-    const one = vi.fn().mockImplementation((() => async (_tree, file) => {
+    const one = vi.fn<ReadPlugin>().mockImplementation(() => (_tree, file) => {
       file.data.one = 'One';
-    }) satisfies Plugin);
-    const two = vi.fn().mockImplementation((() => async (_tree, file) => {
+    });
+    const two = vi.fn<ReadPlugin>().mockImplementation(() => (_tree, file) => {
       file.data.two = 'Two';
-    }) satisfies Plugin);
+    });
     // When
     const result = await read('/a/a.md', one, two);
     // Then

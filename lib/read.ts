@@ -1,11 +1,13 @@
+import type { Root } from 'mdast';
+import type { Plugin } from 'unified';
+
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
-import { unified, type Plugin } from 'unified';
+import { unified } from 'unified';
 
 import { remarkMatter } from './remarkMatter';
 import { remarkMinutes } from './remarkMinutes';
@@ -30,7 +32,7 @@ export const read = async (
   target: string | { crumbs: readonly string[]; root: string },
   ...plugins: ReadPlugin[]
 ): Promise<{
-  /** Dictionary containing the plugins output */
+  /** Dictionary containing the plugins' output */
   data: Record<string, unknown>;
   /** Dictionary of matter data found in the Markdown */
   matter: Record<string, unknown>;
@@ -62,7 +64,9 @@ export const read = async (
   } = await processor.process(buffer);
   return {
     data,
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
     matter: matter as Record<string, unknown>,
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
     minutes: minutes as number,
     path,
     text: String(value),

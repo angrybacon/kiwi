@@ -2,10 +2,7 @@
  * Build an array of menu entries out of metadata CARDS.
  * Cards are grouped together following the `category` property.
  */
-export const makeMenu = <
-  TCategory extends string,
-  TCard extends { category: TCategory },
->(
+export const makeMenu = <TCard extends { category: string }>(
   cards: TCard[],
 ) => {
   const menu = cards.reduce<Map<TCard['category'], TCard[]>>(

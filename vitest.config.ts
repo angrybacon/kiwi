@@ -6,5 +6,7 @@ export default defineConfig({
       reportOnFailure: true,
       reporter: ['json', 'json-summary', 'text'],
     },
+    mockReset: true,
+    reporters: ['dot'],
   },
 });

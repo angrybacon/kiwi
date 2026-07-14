@@ -18,14 +18,13 @@ export const makeNextRoutes = <
   paths.map((crumbs) => {
     if (crumbs.length !== names.length) {
       throw new Error(
-        `Found orphan at "${crumbs}", expected depth of ${names.length}`,
+        `Found orphan at "${crumbs.join('/')}", expected depth of ${names.length}`,
       );
     }
-    return names.reduce<TRoute>(
-      (route, name, index) => ({
-        ...route,
-        [name]: crumbs[index] && trimOrderPrefix(crumbs[index]),
-      }),
-      {} as TRoute,
-    );
+    const route = {} as Record<string, string>;
+    for (let index = 0; index < names.length; index++) {
+      route[names[index]!] = trimOrderPrefix(crumbs[index]!);
+    }
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
+    return route as TRoute;
   });

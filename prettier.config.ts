@@ -1,11 +1,12 @@
-import { type Config } from 'prettier';
+import type { Config } from 'prettier';
 
 export default {
   importOrder: [
+    '<TYPES>',
+    '<TYPES>[.]',
+    '',
     '<BUILTIN_MODULES>',
     '<THIRD_PARTY_MODULES>',
-    '',
-    '^~/',
     '',
     '^[.]',
   ],

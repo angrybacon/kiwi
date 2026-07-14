@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { makePaths } from './makePaths';
 
-describe(makePaths.name, () => {
+describe(makePaths, () => {
   it('should yield well-formed crumbs from the provided tree', () => {
     // Given
     const paths: [chapter: string, slug: string][] = [

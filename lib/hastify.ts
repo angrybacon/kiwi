@@ -29,7 +29,7 @@ export function hastify<
     hProperties: NonNullable<TDirective['data']>['hProperties'] & TExtra;
   };
 } {
-  directive.data = directive.data || {};
+  directive.data = directive.data ?? {};
   directive.data.hName = directive.name;
   directive.data.hProperties = {
     ...directive.data.hProperties,

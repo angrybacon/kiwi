@@ -1,5 +1,7 @@
 import type { PhrasingContent, Root, RootContent } from 'mdast';
-import { toc, type Options } from 'mdast-util-toc';
+import type { Options } from 'mdast-util-toc';
+
+import { toc } from 'mdast-util-toc';
 import { remark } from 'remark';
 
 export type Toc = {
@@ -8,7 +10,7 @@ export type Toc = {
   url?: string;
 };
 
-/** Pull and join text nodes from the provided TOKENS, recursively */
+/** Pull and join text nodes from the provided TOKENS */
 const flatten = (tokens: PhrasingContent[]): string =>
   tokens.reduce((accumulator, token) => {
     if ('children' in token) {
@@ -20,12 +22,18 @@ const flatten = (tokens: PhrasingContent[]): string =>
     return accumulator + token.value;
   }, '');
 
-const parseToc = (node: RootContent, accumulator: Toc = {}): Toc => {
-  switch (node?.type) {
-    case 'list':
+const parseToc = (
+  node: RootContent | undefined,
+  accumulator: Toc = {},
+): Toc => {
+  if (node === undefined) return accumulator;
+  // oxlint-disable-next-line typescript/switch-exhaustiveness-check
+  switch (node.type) {
+    case 'list': {
       accumulator.items = node.children.map((child) => parseToc(child));
       return accumulator;
-    case 'listItem':
+    }
+    case 'listItem': {
       const [first, second] = node.children;
       if (!first) {
         throw new Error('Missing node "first" in "listItem"');
@@ -35,15 +43,21 @@ const parseToc = (node: RootContent, accumulator: Toc = {}): Toc => {
         parseToc(second, heading);
       }
       return heading;
-    case 'paragraph':
+    }
+    case 'paragraph': {
       const [link] = node.children;
       if (link?.type !== 'link') {
-        throw new Error(`Found unsupported node type in paragraph "${link}"`);
+        const it = JSON.stringify(link, null, 2);
+        throw new Error(`Found unsupported node type in paragraph ${it}`);
       }
       accumulator.title = flatten(link.children);
       accumulator.url = link.url;
+      return accumulator;
+    }
+    default: {
+      return accumulator;
+    }
   }
-  return accumulator;
 };
 
 /**
@@ -53,11 +67,9 @@ const parseToc = (node: RootContent, accumulator: Toc = {}): Toc => {
  * unaltered.
  */
 export const makeToc = (content: string, options?: Options) => {
-  const { data } = remark()
-    .use(() => (node: Root, output) => {
-      const { map } = toc(node, options);
-      output.data = map ? parseToc(map) : {};
-    })
+  let result: Toc = {};
+  remark()
+    .use(() => (node: Root) => void (result = parseToc(toc(node, options).map)))
     .processSync(content);
-  return data as Toc;
+  return result;
 };
